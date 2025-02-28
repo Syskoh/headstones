@@ -9,6 +9,7 @@ import tk.alex3025.headstones.listeners.BlockBreakListener;
 import tk.alex3025.headstones.listeners.PlayerDeathListener;
 import tk.alex3025.headstones.listeners.RightClickListener;
 import tk.alex3025.headstones.utils.ConfigFile;
+import tk.alex3025.headstones.utils.WorldGuardHook;
 
 public final class Headstones extends JavaPlugin {
 
@@ -17,6 +18,18 @@ public final class Headstones extends JavaPlugin {
     private ConfigFile config;
     private ConfigFile messages;
     private ConfigFile database;
+
+    private static boolean worldGuardEnabled = true;
+
+    @Override
+    public void onLoad() {
+        // Plugin startup logic
+        try {
+            WorldGuardHook.init();
+        } catch (NoClassDefFoundError e) {
+            worldGuardEnabled = false;
+        }
+    }
 
     @Override
     public void onEnable() {
@@ -70,4 +83,7 @@ public final class Headstones extends JavaPlugin {
         return database;
     }
 
+    public static boolean isWorldGuardEnabled() {
+        return worldGuardEnabled;
+    }
 }

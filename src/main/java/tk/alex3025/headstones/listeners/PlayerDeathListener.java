@@ -6,14 +6,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.jetbrains.annotations.NotNull;
+import tk.alex3025.headstones.Headstones;
 import tk.alex3025.headstones.utils.ExperienceManager;
 import tk.alex3025.headstones.utils.Headstone;
+import tk.alex3025.headstones.utils.WorldGuardHook;
 
 public class PlayerDeathListener extends ListenerBase {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerDeath(@NotNull PlayerDeathEvent event) {
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
+
+        if(Headstones.isWorldGuardEnabled() && WorldGuardHook.queryFlag(player)) return;
 
         // Check if the player is a chunk loader from the WildLoaders plugin
         if (player instanceof ChunkLoaderNPC) return;
